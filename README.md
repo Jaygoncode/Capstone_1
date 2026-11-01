@@ -1,7 +1,3 @@
-# Capestone\_1
-
-
-
 \# Capstone\_1: EmporiUm Sales Territory Analysis
 
 
