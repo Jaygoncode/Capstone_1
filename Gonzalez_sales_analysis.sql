@@ -28,8 +28,9 @@ WHERE Store_ID IN (SELECT StoreId FROM store_locations WHERE State = 'New Jersey
 GROUP BY sale_year, sale_month
  ORDER BY monthly_revenue DESC;
 -- Question 3: New Jersey vs. the Northeast region
--- -- Answer: New Jersey's store revenue ($5,175,405.87) is about 21.4% higher
--- of the Northeast region's total ($24,237,526.98).
+-- Answer: New Jersey's store revenue ($5,175,405.87) is about 21.4%
+-- of the Northeast total ($24,237,526.98). The Northeast has 4 states,
+-- so an even split would be 25% each. NJ is slightly below that.
 SELECT SUM(Sale_Amount) AS northeast_revenue
 FROM store_sales
 WHERE Store_ID IN (
@@ -40,3 +41,22 @@ WHERE Store_ID IN (
     )
 );
 SELECT ROUND(5175405.87 / 24237526.98 * 100, 1) AS nj_percent_of_northeast;
+SELECT State FROM management WHERE Region = 'Northeast';
+-- Question 4: What is the number of transactions per month and average transaction amount by product category for the sales territory?
+--  Transactions per month and average sale by category (New Jersey)
+-- 288 rows, one for each month and category that had sales.
+-- Technology and Accessories has the biggest average sale ($460.57) and
+-- Stationery and Supplies has the smallest ($10.06). Stationery and Supplies has the most transactions of 8265
+SELECT
+    YEAR(s.Transaction_Date) AS sale_year,
+    MONTH(s.Transaction_Date) AS sale_month,
+    c.Category,
+    COUNT(*) AS number_of_transactions,
+    AVG(s.Sale_Amount) AS avg_sale_amount
+FROM store_sales s
+JOIN products p ON s.Prod_Num = p.ProdNum
+JOIN inventory_categories c ON p.Categoryid = c.Categoryid
+WHERE s.Store_ID IN (SELECT StoreId FROM store_locations WHERE State = 'New Jersey')
+GROUP BY sale_year, sale_month, c.Category 
+ORDER BY sale_year, sale_month, c.Category; 
+
