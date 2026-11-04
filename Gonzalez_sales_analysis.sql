@@ -66,7 +66,9 @@ ORDER BY sale_year, sale_month, c.Category;
 
 -- Question 5: Rank New Jersey stores by total revenue
 -- Answer: 16 NJ stores ranked. Newark ($623,163.53) is first and
--- Trenton ($597,565.68) is second. The last-place store is Paterson at $67,112.57.
+-- Trenton ($597,565.68) is second. Paterson ($67,112.57) is last,
+-- far below Montclair ($261,593.20), the next lowest store.
+-- Most other stores earn roughly $260K to $320K.
 SELECT
     l.StoreLocation,
     l.StoreId,
