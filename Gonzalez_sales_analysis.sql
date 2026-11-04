@@ -76,3 +76,20 @@ JOIN store_locations l ON s.Store_ID = l.StoreId
 WHERE l.State = 'New Jersey'
 GROUP BY l.StoreLocation, l.StoreId
 ORDER BY total_revenue DESC;
+
+-- Question 6 Recommendation:
+-- Next quarter, focus sales attention on Technology & Accessories.
+-- Why: it has the highest average sale ($460.57) and brings in
+-- $3,630,738.42 in total revenue, about 70% of New Jersey sales.
+-- 70% from one category also means New Jersey depends heavily on Technology. Which can be a risk if it starts to drop in revenue.
+-- Stationery has the most transactions (8,265) but only ~$10 each
+-- (about 1.6% of revenue), so extra effort there adds little revenue.
+SELECT
+    c.Category,
+    SUM(s.Sale_Amount) AS total_revenue
+FROM store_sales s
+JOIN products p ON s.Prod_Num = p.ProdNum
+JOIN inventory_categories c ON p.Categoryid = c.Categoryid
+WHERE s.Store_ID IN (SELECT StoreId FROM store_locations WHERE State = 'New Jersey')
+GROUP BY c.Category
+ORDER BY total_revenue DESC;
